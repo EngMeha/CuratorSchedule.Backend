@@ -10,24 +10,6 @@ public static class SwaggerServiceCollectionExtension
         services.AddSwaggerGen(options =>
         {
             options.SwaggerDoc("v1", new OpenApiInfo { Title = "GroupService", Version = "v1" });
-
-            options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-            {
-                Name = "Authorization",
-                Type = SecuritySchemeType.Http,
-                Scheme = "bearer",
-                BearerFormat = "JWT",
-                In = ParameterLocation.Header,
-                Description = "Укажи JWT токен"
-            });
-
-            options.AddSecurityRequirement(doc => new OpenApiSecurityRequirement
-            {
-                {
-                    new OpenApiSecuritySchemeReference("Bearer"),
-                    []
-                }
-            });
         });
 
         return services;
