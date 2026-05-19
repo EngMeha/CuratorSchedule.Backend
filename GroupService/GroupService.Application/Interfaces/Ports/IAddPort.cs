@@ -2,5 +2,5 @@
 
 public interface IAddPort<in TEntity>: IPortMarker where TEntity: class
 {
-    public Task AddAsync(TEntity entity, CancellationToken cancellationToken = default);
+    public Task<Guid> AddAsync(TEntity entity, CancellationToken cancellationToken = default);
 }
