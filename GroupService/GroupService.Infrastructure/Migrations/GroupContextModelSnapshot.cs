@@ -51,8 +51,8 @@ namespace GroupService.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<int>("CountStudents")
-                        .HasColumnType("integer");
+                    b.Property<long>("CountStudents")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -72,8 +72,8 @@ namespace GroupService.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<int?>("ActualCount")
-                        .HasColumnType("integer");
+                    b.Property<long?>("ActualCount")
+                        .HasColumnType("bigint");
 
                     b.Property<Guid>("EventProjectionId")
                         .HasColumnType("uuid");
@@ -84,8 +84,8 @@ namespace GroupService.Infrastructure.Migrations
                     b.Property<Guid>("GroupId")
                         .HasColumnType("uuid");
 
-                    b.Property<int>("PlannedCount")
-                        .HasColumnType("integer");
+                    b.Property<long>("PlannedCount")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Status")
                         .IsRequired()
