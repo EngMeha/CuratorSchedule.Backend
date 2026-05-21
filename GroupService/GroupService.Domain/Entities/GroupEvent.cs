@@ -9,7 +9,7 @@ public class GroupEvent
     public Group Group { get; set; } = null!;
     public Guid EventProjectionId { get; set; }
     public EventProjection EventProjection { get; set; } = null!;
-    public uint PlannedCount { get; set; }    
-    public uint? ActualCount { get; set; }    
+    public int PlannedCount { get; set; }    
+    public int? ActualCount { get; set; }    
     public EventStatus Status { get; set; }
 }

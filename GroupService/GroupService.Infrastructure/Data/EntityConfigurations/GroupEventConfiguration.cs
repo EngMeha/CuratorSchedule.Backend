@@ -21,7 +21,7 @@ public class GroupEventConfiguration: IEntityTypeConfiguration<GroupEvent>
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasOne(ge => ge.EventProjection)
-            .WithMany()
+            .WithMany(ep => ep.GroupEvents)
             .HasForeignKey(ge => ge.EventProjectionId)
             .OnDelete(DeleteBehavior.Restrict);
     }
