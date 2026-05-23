@@ -1,9 +1,11 @@
 ﻿using ErrorOr;
+using GroupService.Application.UseCases.Command.Groups.AddEventToGroup;
 using GroupService.Application.UseCases.Command.Groups.CreateGroup;
 using GroupService.Application.UseCases.Command.Groups.DeleteGroup;
 using GroupService.Application.UseCases.Command.Groups.UpdateGroup;
 using GroupService.Application.UseCases.Query.Groups.GetGroup;
 using GroupService.Application.UseCases.Query.Groups.GetGroups;
+using GroupService.Controllers.Requests;
 using Mediator;
 using Microsoft.AspNetCore.Mvc;
 
@@ -72,7 +74,18 @@ public class GroupControllers: BaseController
     public async Task<ActionResult> Delete(Guid id, CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(new DeleteGroupCommand(id), cancellationToken);
-        
+
+        return result.Match<ActionResult>(
+            _ => Ok(),
+            errors => Problem(errors)
+        );
+    }
+
+    [HttpPost("{id:guid}/add-event")]
+    public async Task<ActionResult> AddEvent(Guid id, AddEventToGroupRequest request, CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(new AddEventToGroupCommand(id, request.EventId, request.CountStudents), cancellationToken);
+
         return result.Match<ActionResult>(
             _ => Ok(),
             errors => Problem(errors)
