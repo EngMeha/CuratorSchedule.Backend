@@ -1,15 +1,15 @@
-﻿using GroupService.Application.UseCases.Command.Groups.CancelGroupEvent;
+﻿using GroupService.Application.UseCases.Command.Groups.CompleteGroupEvent;
 using GroupService.Domain.Entities;
 using GroupService.Domain.Entities.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace GroupService.Infrastructure.Data.Adapters.Groups;
 
-public class EfCancelGroupEventPort: ICancelGroupEventPort
+public class EfCompleteGroupEventAdapter: ICompleteGroupEventPort
 {
     private readonly GroupContext _context;
 
-    public EfCancelGroupEventPort(GroupContext context)
+    public EfCompleteGroupEventAdapter(GroupContext context)
     {
         _context = context;
     }
@@ -21,9 +21,10 @@ public class EfCancelGroupEventPort: ICancelGroupEventPort
             .FirstOrDefaultAsync(cancellationToken);
     }
 
-    public void Cancel(GroupEvent groupEvent)
+    public void Complete(GroupEvent groupEvent, int actualCountStudent)
     {
-        groupEvent.Status = EventStatus.Cancelled;
-        _context.Update(groupEvent);
+        groupEvent.Status = EventStatus.Completed;
+        groupEvent.ActualCount = actualCountStudent;
+        _context.GroupEvents.Update(groupEvent);
     }
 }

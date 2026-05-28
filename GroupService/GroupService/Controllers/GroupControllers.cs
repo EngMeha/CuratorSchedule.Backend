@@ -1,6 +1,7 @@
 ﻿using ErrorOr;
 using GroupService.Application.UseCases.Command.Groups.AddEventToGroup;
 using GroupService.Application.UseCases.Command.Groups.CancelGroupEvent;
+using GroupService.Application.UseCases.Command.Groups.CompleteGroupEvent;
 using GroupService.Application.UseCases.Command.Groups.CreateGroup;
 using GroupService.Application.UseCases.Command.Groups.DeleteGroup;
 using GroupService.Application.UseCases.Command.Groups.MissGroupEvent;
@@ -83,10 +84,10 @@ public class GroupControllers: BaseController
         );
     }
 
-    [HttpPost("{id:guid}/add-event")]
-    public async Task<ActionResult> AddEvent(Guid id, AddEventToGroupRequest request, CancellationToken cancellationToken)
+    [HttpPost("{groupId:guid}/events")]
+    public async Task<ActionResult> AddEvent(Guid groupId, AddEventToGroupRequest request, CancellationToken cancellationToken)
     {
-        var result = await _mediator.Send(new AddEventToGroupCommand(id, request.EventId, request.CountStudents), cancellationToken);
+        var result = await _mediator.Send(new AddEventToGroupCommand(groupId, request.EventId, request.CountStudents), cancellationToken);
 
         return result.Match<ActionResult>(
             _ => Ok(),
@@ -94,7 +95,7 @@ public class GroupControllers: BaseController
         );
     }
 
-    [HttpPost("{groupId:guid}/events/{eventId}/miss-event")]
+    [HttpPost("{groupId:guid}/events/{eventId:guid}/miss")]
     public async Task<ActionResult> MissEvent(Guid groupId, Guid eventId, CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(new MissGroupEventCommand(eventId, groupId), cancellationToken);
@@ -104,10 +105,20 @@ public class GroupControllers: BaseController
         );
     }
     
-    [HttpPost("{groupId:guid}/events/{eventId}/cancel-event")]
+    [HttpPost("{groupId:guid}/events/{eventId:guid}/cancel")]
     public async Task<ActionResult> CancelEvent(Guid groupId, Guid eventId, CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(new CancelGroupEventCommand(eventId, groupId), cancellationToken);
+        return result.Match<ActionResult>(
+            _ => Ok(),
+            errors => Problem(errors)
+        );
+    }
+    
+    [HttpPost("{groupId:guid}/events/{eventId:guid}/complete")]
+    public async Task<ActionResult> CompleteEvent(Guid groupId, Guid eventId, CompleteGroupEventRequest request, CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(new CompleteGroupEventCommand(eventId, groupId, request.CountStudents), cancellationToken);
         return result.Match<ActionResult>(
             _ => Ok(),
             errors => Problem(errors)
