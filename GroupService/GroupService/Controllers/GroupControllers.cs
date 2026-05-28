@@ -2,6 +2,7 @@
 using GroupService.Application.UseCases.Command.Groups.AddEventToGroup;
 using GroupService.Application.UseCases.Command.Groups.CreateGroup;
 using GroupService.Application.UseCases.Command.Groups.DeleteGroup;
+using GroupService.Application.UseCases.Command.Groups.MissEvent;
 using GroupService.Application.UseCases.Command.Groups.UpdateGroup;
 using GroupService.Application.UseCases.Query.Groups.GetGroup;
 using GroupService.Application.UseCases.Query.Groups.GetGroups;
@@ -86,6 +87,16 @@ public class GroupControllers: BaseController
     {
         var result = await _mediator.Send(new AddEventToGroupCommand(id, request.EventId, request.CountStudents), cancellationToken);
 
+        return result.Match<ActionResult>(
+            _ => Ok(),
+            errors => Problem(errors)
+        );
+    }
+
+    [HttpPost("{groupId:guid}/events/{eventId}/miss-event")]
+    public async Task<ActionResult> MissEvent(Guid groupId, Guid eventId, CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(new MissEventCommand(eventId, groupId), cancellationToken);
         return result.Match<ActionResult>(
             _ => Ok(),
             errors => Problem(errors)
