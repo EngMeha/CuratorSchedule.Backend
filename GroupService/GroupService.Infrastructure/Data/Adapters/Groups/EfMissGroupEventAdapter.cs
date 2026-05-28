@@ -1,15 +1,15 @@
-﻿using GroupService.Application.UseCases.Command.Groups.MissEvent;
+﻿using GroupService.Application.UseCases.Command.Groups.MissGroupEvent;
 using GroupService.Domain.Entities;
 using GroupService.Domain.Entities.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace GroupService.Infrastructure.Data.Adapters.Groups;
 
-public class EfMissEventAdapter: IMissEventPort
+public class EfMissGroupEventAdapter: IMissGroupEventPort
 {
     private readonly GroupContext _context;
 
-    public EfMissEventAdapter(GroupContext context)
+    public EfMissGroupEventAdapter(GroupContext context)
     {
         _context = context;
     }
@@ -21,7 +21,7 @@ public class EfMissEventAdapter: IMissEventPort
             .FirstOrDefaultAsync(cancellationToken);
     }
     
-    public void Miss(GroupEvent groupEvent, CancellationToken cancellationToken)
+    public void Miss(GroupEvent groupEvent)
     {
         groupEvent.Status = EventStatus.Missed;
         _context.GroupEvents.Update(groupEvent);

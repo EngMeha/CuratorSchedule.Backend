@@ -1,8 +1,9 @@
 ﻿using ErrorOr;
 using GroupService.Application.UseCases.Command.Groups.AddEventToGroup;
+using GroupService.Application.UseCases.Command.Groups.CancelGroupEvent;
 using GroupService.Application.UseCases.Command.Groups.CreateGroup;
 using GroupService.Application.UseCases.Command.Groups.DeleteGroup;
-using GroupService.Application.UseCases.Command.Groups.MissEvent;
+using GroupService.Application.UseCases.Command.Groups.MissGroupEvent;
 using GroupService.Application.UseCases.Command.Groups.UpdateGroup;
 using GroupService.Application.UseCases.Query.Groups.GetGroup;
 using GroupService.Application.UseCases.Query.Groups.GetGroups;
@@ -96,7 +97,17 @@ public class GroupControllers: BaseController
     [HttpPost("{groupId:guid}/events/{eventId}/miss-event")]
     public async Task<ActionResult> MissEvent(Guid groupId, Guid eventId, CancellationToken cancellationToken)
     {
-        var result = await _mediator.Send(new MissEventCommand(eventId, groupId), cancellationToken);
+        var result = await _mediator.Send(new MissGroupEventCommand(eventId, groupId), cancellationToken);
+        return result.Match<ActionResult>(
+            _ => Ok(),
+            errors => Problem(errors)
+        );
+    }
+    
+    [HttpPost("{groupId:guid}/events/{eventId}/cancel-event")]
+    public async Task<ActionResult> CancelEvent(Guid groupId, Guid eventId, CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(new CancelGroupEventCommand(eventId, groupId), cancellationToken);
         return result.Match<ActionResult>(
             _ => Ok(),
             errors => Problem(errors)
