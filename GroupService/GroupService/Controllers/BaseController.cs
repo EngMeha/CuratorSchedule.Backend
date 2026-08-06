@@ -5,7 +5,7 @@ namespace GroupService.Controllers;
 
 public class BaseController: ControllerBase
 {
-    protected ActionResult Problem(List<Error> errors)
+    protected ActionResult ProblemFromErrors(List<Error> errors)
     {
         var error = errors.First();
         var status = error.Type switch

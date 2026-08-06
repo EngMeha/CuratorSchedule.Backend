@@ -1,5 +1,4 @@
-﻿using ErrorOr;
-using GroupService.Application.UseCases.Command.Groups.AddEventToGroup;
+﻿using GroupService.Application.UseCases.Command.Groups.AddEventToGroup;
 using GroupService.Application.UseCases.Command.Groups.CancelGroupEvent;
 using GroupService.Application.UseCases.Command.Groups.CompleteGroupEvent;
 using GroupService.Application.UseCases.Command.Groups.CreateGroup;
@@ -32,7 +31,7 @@ public class GroupControllers: BaseController
 
         return result.Match<ActionResult<List<GetGroupsResponse>>>(
             value => Ok(value),
-            errors => Problem(errors.First().Description)
+            errors => ProblemFromErrors(errors)
         );
     }
     
@@ -43,7 +42,7 @@ public class GroupControllers: BaseController
 
         return result.Match<ActionResult<GetGroupResponse>>(
             value => Ok(value),
-            errors => Problem(errors.First().Description)
+            errors => ProblemFromErrors(errors)
         );
     }
 
@@ -54,7 +53,7 @@ public class GroupControllers: BaseController
         
         return result.Match<ActionResult<Guid>>(
             value => Ok(value),
-            errors => Problem(errors)
+            errors => ProblemFromErrors(errors)
         );
     }
 
@@ -69,7 +68,7 @@ public class GroupControllers: BaseController
         
         return result.Match<ActionResult<Guid>>(
             value => Ok(value),
-            errors => Problem(errors)
+            errors => ProblemFromErrors(errors)
         );
     }
 
@@ -80,7 +79,7 @@ public class GroupControllers: BaseController
 
         return result.Match<ActionResult>(
             _ => Ok(),
-            errors => Problem(errors)
+            errors => ProblemFromErrors(errors)
         );
     }
 
@@ -91,7 +90,7 @@ public class GroupControllers: BaseController
 
         return result.Match<ActionResult>(
             _ => Ok(),
-            errors => Problem(errors)
+            errors => ProblemFromErrors(errors)
         );
     }
 
@@ -101,7 +100,7 @@ public class GroupControllers: BaseController
         var result = await _mediator.Send(new MissGroupEventCommand(eventId, groupId), cancellationToken);
         return result.Match<ActionResult>(
             _ => Ok(),
-            errors => Problem(errors)
+            errors => ProblemFromErrors(errors)
         );
     }
     
@@ -111,7 +110,7 @@ public class GroupControllers: BaseController
         var result = await _mediator.Send(new CancelGroupEventCommand(eventId, groupId), cancellationToken);
         return result.Match<ActionResult>(
             _ => Ok(),
-            errors => Problem(errors)
+            errors => ProblemFromErrors(errors)
         );
     }
     
@@ -121,7 +120,7 @@ public class GroupControllers: BaseController
         var result = await _mediator.Send(new CompleteGroupEventCommand(eventId, groupId, request.CountStudents), cancellationToken);
         return result.Match<ActionResult>(
             _ => Ok(),
-            errors => Problem(errors)
+            errors => ProblemFromErrors(errors)
         );
     }
 }
