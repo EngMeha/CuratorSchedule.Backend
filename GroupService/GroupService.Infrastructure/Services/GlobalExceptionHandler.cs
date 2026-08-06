@@ -30,6 +30,6 @@ public class GlobalExceptionHandler: IExceptionHandler
         context.Response.StatusCode = problemDetails.Status.Value;
         await context.Response.WriteAsJsonAsync(problemDetails, cancellationToken);
 
-        return true; // true = исключение обработано, не бросать дальше
+        return true;
     }
 }
