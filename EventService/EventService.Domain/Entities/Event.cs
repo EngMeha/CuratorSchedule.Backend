@@ -1,4 +1,5 @@
 ﻿using EventService.Domain.Expetions;
+using EventService.Domain.ValueObjects;
 
 namespace EventService.Domain.Entities;
 
@@ -19,8 +20,8 @@ public class Event
     
     public int TotalGroups { get; private set; }
     public double AvgAttendance { get; private set; }
-
-    public bool IsCompleted { get; private set; }
+    
+    public EventStatus Status { get; private set; }
     
     public IReadOnlyCollection<CategoryEvent> CategoryEvents => _categoryEvents.AsReadOnly();
 
@@ -52,13 +53,13 @@ public class Event
         EndDate = endDate;
         StartTime = startTime;
         EndTime = endTime;
+        Status = EventStatus.Planned;
         _categoryEvents = categoryEvents is null ? [] : new (categoryEvents);
     }
     
     public void ApplyCompletionStats(int totalGroups, double avgAttendance)
     {
-        if (IsCompleted)
-            throw new DomainException("Event is complete");
+        EnsurePlanned();
         
         if (totalGroups < 0)
             throw new DomainException("Total groups cannot be negative");
@@ -68,6 +69,18 @@ public class Event
         
         TotalGroups = totalGroups;
         AvgAttendance = avgAttendance;
-        IsCompleted = true;
+        Status = EventStatus.Completed;
+    }
+
+    public void Cancel()
+    {
+        EnsurePlanned();
+        Status = EventStatus.Cancelled;
+    }
+    
+    private void EnsurePlanned()
+    {
+        if (Status != EventStatus.Planned )
+            throw new DomainException("Cannot change status: event is already {Status}");
     }
 }
