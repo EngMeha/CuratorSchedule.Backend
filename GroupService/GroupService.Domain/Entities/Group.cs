@@ -13,6 +13,12 @@ public class Group
     
     private Group() {}
 
+    public Group(string name, int countStudents)
+        : this(name, countStudents, [])
+    {
+        
+    }
+    
     public Group(string name, int countStudents, List<GroupEvent> groupEvents)
     {
         if (string.IsNullOrWhiteSpace(name))
@@ -25,6 +31,22 @@ public class Group
             
         Id = Guid.NewGuid();
         Name = name.Trim();
+        CountStudents = countStudents;
+    }
+    
+    public void Rename(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new DomainException("Group name cannot be null or empty.");
+
+        Name = name.Trim();
+    }
+
+    public void UpdateStudentsCount(int countStudents)
+    {
+        if (countStudents <= 0)
+            throw new DomainException("Number of students must be greater than zero.");
+
         CountStudents = countStudents;
     }
 }

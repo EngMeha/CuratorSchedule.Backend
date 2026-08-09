@@ -21,8 +21,8 @@ public class UpdateGroupHandler: IRequestHandler<UpdateGroupCommand, ErrorOr<Gui
         if (group == null)
             return Error.NotFound("Group.NotFound");
 
-        group.CountStudents = request.CountStudents;
-        group.Name = request.Name;
+        group.Rename(request.Name);
+        group.UpdateStudentsCount(request.CountStudents);
         
         _updateGroupPort.Update(group);
         await _unitOfWork.SaveChangesAsync(cancellationToken);

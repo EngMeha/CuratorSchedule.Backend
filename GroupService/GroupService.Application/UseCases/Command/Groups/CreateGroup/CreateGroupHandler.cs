@@ -18,11 +18,7 @@ public class CreateGroupHandler: IRequestHandler<CreateGroupCommand, ErrorOr<Gui
 
     public async ValueTask<ErrorOr<Guid>> Handle(CreateGroupCommand request, CancellationToken cancellationToken)
     {
-        var group = new Group
-        {
-            CountStudents = request.CountStudents,
-            Name = request.Name
-        };
+        var group = new Group(request.Name, request.CountStudents);
         
         await _createGroupPort.AddAsync(group, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
