@@ -12,7 +12,7 @@ public static class DataExtensions
     public static IServiceCollection AddData(this IServiceCollection services, IConfiguration configuration)
     {
         var connectionString = configuration.GetConnectionString("DefaultConnection");
-        services.AddDbContext<MyDbContext>(options =>
+        services.AddDbContext<EventDbContext>(options =>
         {
             options.UseNpgsql(connectionString, x 
                 => x.MigrationsAssembly("EventService.Infrastructure"));

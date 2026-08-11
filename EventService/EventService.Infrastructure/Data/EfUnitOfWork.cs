@@ -4,9 +4,15 @@ namespace EventService.Infrastructure.Data;
 
 public class EfUnitOfWork: IUnitOfWork
 {
-    public Task SaveChangesAsync(CancellationToken cancellationToken = default)
+    private readonly EventDbContext _eventDbContext;
+
+    public EfUnitOfWork(EventDbContext eventDbContext)
     {
-        //TODO прописать реализацию
-        throw new NotImplementedException();
+        _eventDbContext = eventDbContext;
+    }
+
+    public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        await _eventDbContext.SaveChangesAsync(cancellationToken);
     }
 }

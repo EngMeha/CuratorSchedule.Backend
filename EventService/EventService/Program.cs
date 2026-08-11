@@ -29,23 +29,18 @@ else
         });
 }
 
-using (IServiceScope scope = app.Services.CreateScope())
+using (var scope = app.Services.CreateScope())
 {
-    var context = scope.ServiceProvider.GetRequiredService<MyDbContext>();
-    //TODO раскоментировать при создании миграций
-    //await context.Database.MigrateAsync();
+    var context = scope.ServiceProvider.GetRequiredService<EventDbContext>();
+    await context.Database.MigrateAsync();
 }
 
 app.UseExceptionHandler();
 app.UseHttpsRedirection();
 
 
-
 app.UseCors("AllowFrontend");
 app.UseRouting();
-
-app.UseAuthentication();
-app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",

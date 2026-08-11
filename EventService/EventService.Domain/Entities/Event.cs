@@ -27,7 +27,7 @@ public class Event
 
     private Event() {}
     
-    public Event(string name, string place, string address, DateOnly startDate, DateOnly endDate, TimeOnly startTime, TimeOnly endTime, List<CategoryEvent> categoryEvents)
+    public Event(string name, string place, string address, DateOnly startDate, DateOnly endDate, TimeOnly startTime, TimeOnly endTime)
     {
         
         if (string.IsNullOrEmpty(name))
@@ -54,7 +54,6 @@ public class Event
         StartTime = startTime;
         EndTime = endTime;
         Status = EventStatus.Planned;
-        _categoryEvents = categoryEvents is null ? [] : new (categoryEvents);
     }
     
     public void ApplyCompletionStats(int totalGroups, double avgAttendance)
