@@ -10,6 +10,8 @@ public class CategoryConfiguration: IEntityTypeConfiguration<Category>
     {
         builder.Property(x => x.Name).HasMaxLength(255).IsRequired();
         
+        builder.HasIndex(x => x.Name).IsUnique();
+        
         builder.HasMany(x=>x.CategoryEvents)
             .WithOne(x=>x.Category)
             .OnDelete(DeleteBehavior.Cascade);

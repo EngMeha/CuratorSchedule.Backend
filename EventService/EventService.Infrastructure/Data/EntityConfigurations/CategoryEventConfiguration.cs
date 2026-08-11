@@ -15,5 +15,7 @@ public class CategoryEventConfiguration: IEntityTypeConfiguration<CategoryEvent>
         builder.HasOne(ce => ce.Event)
             .WithMany(ce => ce.CategoryEvents)
             .OnDelete(DeleteBehavior.Cascade);
+        
+        builder.HasIndex(ce => new { ce.CategoryId, ce.EventId }).IsUnique();
     }
 }
