@@ -1,8 +1,9 @@
 ﻿namespace GroupService.Domain.Entities.ValueObjects;
 
-public enum EventStatus
+public enum GroupEventStatus
 {
     Planned,
+    Missed,
     Completed,
-    Cancelled
+    Canceled
 }

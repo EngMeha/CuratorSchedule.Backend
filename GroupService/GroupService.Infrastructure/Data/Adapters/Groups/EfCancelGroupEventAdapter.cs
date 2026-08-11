@@ -23,7 +23,7 @@ public class EfCancelGroupEventAdapter: ICancelGroupEventPort
 
     public void Cancel(GroupEvent groupEvent)
     {
-        groupEvent.Status = EventStatus.Cancelled;
+        groupEvent.Canceled();
         _context.Update(groupEvent);
     }
 }

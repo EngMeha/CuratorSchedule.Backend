@@ -23,7 +23,7 @@ public class EfMissGroupEventAdapter: IMissGroupEventPort
     
     public void Miss(GroupEvent groupEvent)
     {
-        groupEvent.Status = EventStatus.Missed;
+        groupEvent.Miss();
         _context.GroupEvents.Update(groupEvent);
     }
 }

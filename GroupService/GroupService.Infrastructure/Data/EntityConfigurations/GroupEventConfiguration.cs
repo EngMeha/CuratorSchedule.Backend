@@ -11,7 +11,7 @@ public class GroupEventConfiguration: IEntityTypeConfiguration<GroupEvent>
     {
         builder.Property(ge => ge.Status)
             .HasConversion<string>()
-            .HasDefaultValue(EventStatus.Planned);
+            .HasDefaultValue(GroupEventStatus.Planned);
 
         builder.HasIndex(ge => new { ge.EventProjectionId, ge.GroupId }).IsUnique();
         

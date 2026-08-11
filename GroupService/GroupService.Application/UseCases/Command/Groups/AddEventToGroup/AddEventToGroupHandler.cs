@@ -30,12 +30,7 @@ public class AddEventToGroupHandler: IRequestHandler<AddEventToGroupCommand, Err
         if (group.CountStudents < request.CountStudents)
             return Error.Validation("Students.TooMany","Students in request more than entity");
         
-        var groupEvent = new GroupEvent
-        {
-            GroupId = group.Id,
-            EventProjectionId = eventProjection.Id,
-            PlannedCount = request.CountStudents,
-        };
+        var groupEvent = new GroupEvent(group.Id, eventProjection.Id, request.CountStudents);
         
         await _addEventToGroupPort.AddGroupEvent(groupEvent, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);

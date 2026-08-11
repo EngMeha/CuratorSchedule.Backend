@@ -23,8 +23,7 @@ public class EfCompleteGroupEventAdapter: ICompleteGroupEventPort
 
     public void Complete(GroupEvent groupEvent, int actualCountStudent)
     {
-        groupEvent.Status = EventStatus.Completed;
-        groupEvent.ActualCount = actualCountStudent;
+        groupEvent.Complete(actualCountStudent);
         _context.GroupEvents.Update(groupEvent);
     }
 }
