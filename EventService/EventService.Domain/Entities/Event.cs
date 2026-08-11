@@ -22,21 +22,33 @@ public class Event
     public double AvgAttendance { get; private set; }
     
     public EventStatus Status { get; private set; }
-    
+
+    public string Price { get; private set; }
+    public bool IsFree { get; private set; }
+    public string SiteUrl { get; private set; }
     public IReadOnlyCollection<CategoryEvent> CategoryEvents => _categoryEvents.AsReadOnly();
 
     private Event() {}
     
-    public Event(string name, string place, string address, DateOnly startDate, DateOnly endDate, TimeOnly startTime, TimeOnly endTime)
+    public Event(string name,
+        string place, 
+        string address, 
+        DateOnly startDate, 
+        DateOnly endDate, 
+        TimeOnly startTime, 
+        TimeOnly endTime,
+        string siteUrl,
+        string price,
+        bool isFree)
     {
         
-        if (string.IsNullOrEmpty(name))
+        if (string.IsNullOrWhiteSpace(name))
             throw new DomainException("Name cannot be empty");
         
-        if (string.IsNullOrEmpty(place))
+        if (string.IsNullOrWhiteSpace(place))
             throw new DomainException("Place cannot be empty");
         
-        if (string.IsNullOrEmpty(address))
+        if (string.IsNullOrWhiteSpace(address))
             throw new DomainException("Address cannot be empty");
         
         if (startDate > endDate)
@@ -44,6 +56,15 @@ public class Event
         
         if (startDate == endDate && startTime >= endTime)
             throw new DomainException("Start time cannot be greater than end time");
+        
+        if (isFree && !string.IsNullOrWhiteSpace(price))
+            throw new DomainException("Free event cannot have a price");
+
+        if (!isFree && string.IsNullOrWhiteSpace(price))
+            throw new DomainException("Paid event must have a price");
+        
+        if (!string.IsNullOrWhiteSpace(siteUrl) && !Uri.IsWellFormedUriString(siteUrl, UriKind.Absolute))
+            throw new DomainException("SiteUrl is not a valid URL");
         
         Id = Guid.NewGuid();
         Name = name;
@@ -54,6 +75,9 @@ public class Event
         StartTime = startTime;
         EndTime = endTime;
         Status = EventStatus.Planned;
+        SiteUrl = siteUrl;
+        Price = price;
+        IsFree = isFree;
     }
     
     public void ApplyCompletionStats(int totalGroups, double avgAttendance)
