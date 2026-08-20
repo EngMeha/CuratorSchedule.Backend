@@ -104,6 +104,6 @@ public class Event
     private void EnsurePlanned()
     {
         if (Status != EventStatus.Planned )
-            throw new DomainException("Cannot change status: event is already {Status}");
+            throw new DomainException($"Cannot change status: event is already {Status}");
     }
 }
